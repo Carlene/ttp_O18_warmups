@@ -16,6 +16,9 @@
 -- 						depending on the condition being met in each row
 --  FROM ...
 
+
+
+
 -- YOUR TURN!
 -- Our marketing analytics team has decided to do a promotion to get more customers to come into our store.
 -- They've decided that they want all of the cheapest PG-13 films to now be rented at $0.10, 
@@ -29,5 +32,20 @@
 -- HINT: you can hardcode the rental bracket rates (just typing in the number - eg 1.99) first to make sure 
 -- you can get your CASE WHEN statement to work, THEN see if you can put it all together with softcoding 
 -- (using a CTE/subquery to return the number - eg. 1.99)
+
+
+SELECT
+	rental_rate
+	,CASE rental_rate
+	WHEN 0.99 THEN 0.10
+	END AS new_rental_rate
+
+FROM
+	film
+
+WHERE
+	rating = 'PG-13'
+
+
 
 -- CHECK OUT THE HINTS FILE IF YOU GET STUCK
