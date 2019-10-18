@@ -60,21 +60,21 @@ SELECT
 			film)
 	THEN 0.10
 	WHEN (SELECT DISTINCT
-	rental_rate
+			rental_rate
 
-FROM 	
-	film
+		FROM 	
+			film
 
-WHERE 
-	rental_rate > (SELECT
-					MIN(rental_rate)
-				FROM
-					film)
-	AND 
-	rental_rate < (SELECT
-					MAX(rental_rate)
-				FROM
-					film))
+		WHERE 
+			rental_rate > (SELECT
+							MIN(rental_rate)
+						FROM
+							film)
+			AND 
+			rental_rate < (SELECT
+							MAX(rental_rate)
+						FROM
+							film))
 	THEN 1.00
 	ELSE rental_rate
 	END AS new_rental_rate
@@ -89,21 +89,43 @@ WHERE
 
 
 
--- SELECT DISTINCT
--- 	rental_rate
+WITH lowest_rate AS(SELECT
+					MIN(rental_rate)
+				FROM
+					film)
 
--- FROM 	
--- 	film
+,highest_rate AS (SELECT
+					MAX(rental_rate)
+				FROM
+					film)
 
--- WHERE 
--- 	rental_rate > (SELECT
--- 					MIN(rental_rate)
--- 				FROM
--- 					film)
--- 	AND 
--- 	rental_rate < (SELECT
--- 					MAX(rental_rate)
--- 				FROM
--- 					film)
+,middle_rate AS (SELECT DISTINCT
+					rental_rate
+
+				FROM 	
+					film
+
+				WHERE 
+					rental_rate > lowest_rate
+					AND
+					rental_rate < highest_rate)
+
+
+SELECT
+	rental_rate
+	,CASE rental_rate
+	WHEN lowest_rate
+	THEN 0.10
+	WHEN middle_rate
+	THEN 1.00
+	ELSE rental_rate
+	END AS new_rental_rate
+
+FROM 
+	film
+
+WHERE
+	rating = 'PG-13'
+
 
 -- CHECK OUT THE HINTS FILE IF YOU GET STUCK
