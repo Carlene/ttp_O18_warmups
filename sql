@@ -33,7 +33,7 @@
 -- you can get your CASE WHEN statement to work, THEN see if you can put it all together with softcoding 
 -- (using a CTE/subquery to return the number - eg. 1.99)
 
-
+-- HARDCODING
 SELECT
 	rental_rate
 	,CASE rental_rate
@@ -50,7 +50,7 @@ WHERE
 
 
 
-
+-- NESTED SUBQUERIES
 SELECT
 	rental_rate
 	,CASE rental_rate
@@ -87,7 +87,7 @@ WHERE
 	
 
 
-
+-- CTE ATTEMPT
 
 WITH lowest_rate AS(SELECT
 					MIN(rental_rate)
