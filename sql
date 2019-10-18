@@ -38,6 +38,8 @@ SELECT
 	rental_rate
 	,CASE rental_rate
 	WHEN 0.99 THEN 0.10
+	WHEN 1.99 THEN 1.00
+	ELSE rental_rate
 	END AS new_rental_rate
 
 FROM
@@ -47,5 +49,23 @@ WHERE
 	rating = 'PG-13'
 
 
+
+
+SELECT
+	rental_rate
+	,CASE rental_rate
+	WHEN (SELECT 
+			MIN(rental_rate)
+		FROM
+			film)
+	THEN 0.10
+	ELSE rental_rate
+	END AS new_rental_rate
+
+FROM
+	film
+
+WHERE
+	rating = 'PG-13'
 
 -- CHECK OUT THE HINTS FILE IF YOU GET STUCK
