@@ -90,33 +90,28 @@ WHERE
 -- CTE ATTEMPT
 
 WITH lowest_rate AS(SELECT
-					MIN(rental_rate)
+					MIN(rental_rate) as lowest
 				FROM
 					film)
 
 ,highest_rate AS (SELECT
-					MAX(rental_rate)
+					MAX(rental_rate) as highest
 				FROM
 					film)
-
-,middle_rate AS (SELECT DISTINCT
-					rental_rate
-
-				FROM 	
-					film
-
-				WHERE 
-					rental_rate > lowest_rate
-					AND
-					rental_rate < highest_rate)
 
 
 SELECT
 	rental_rate
-	,CASE rental_rate
-	WHEN lowest_rate
+	,CASE 
+	WHEN rental_rate = (SELECT
+							lowest
+						FROM
+						 	lowest_rate)
 	THEN 0.10
-	WHEN middle_rate
+	WHEN rental_rate < (SELECT
+							highest
+						FROM
+						 	highest_rate)
 	THEN 1.00
 	ELSE rental_rate
 	END AS new_rental_rate
@@ -126,6 +121,5 @@ FROM
 
 WHERE
 	rating = 'PG-13'
-
 
 -- CHECK OUT THE HINTS FILE IF YOU GET STUCK
